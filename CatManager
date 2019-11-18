@@ -1,0 +1,113 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class CatManager : MonoBehaviour
+{
+
+    Animator anim;
+    private Rigidbody2D rd2d;
+    public float speed;
+    public int count;
+    public Text countText;
+    public Text winText;
+
+
+
+
+
+
+    // Start is called before the first frame update
+    //I WILL GET THIS CAT RUNNING
+    void Start()
+    { anim = GetComponent<Animator>();
+        rd2d = GetComponent<Rigidbody2D>();
+        count = 0;
+        winText.text = "";
+        
+
+    }
+
+
+   
+
+
+
+    void Update()
+    {
+        {
+            float hozMovement = Input.GetAxis("Horizontal");
+            float vertMovement = Input.GetAxis("Vertical");
+            rd2d.AddForce(new Vector2(hozMovement * speed, vertMovement * speed));
+        }
+        
+
+        // Walking to Idle
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            anim.SetInteger("State", 1);
+        }
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            anim.SetInteger("State", 0);
+        }
+        // for first animation
+
+        // Jumping to Idle
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            anim.SetInteger("State", 0);
+        }
+        if (Input.GetKeyUp(KeyCode.R))
+        {
+            anim.SetInteger("State", 1);
+        }
+        // for second animation
+
+
+        {
+
+            float moveHorizontal = Input.GetAxis("Horizontal");
+
+            //Vector2 movement = new Vector2(moveHorizontal, 0);
+
+            // rb2d.AddForce(movement * speed);
+
+           
+        }
+
+        
+        void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.gameObject.CompareTag ("Pickup"))
+            {
+                other.gameObject.SetActive(false);
+                count = count + 1;
+                SetCountText();
+            }
+            else if (other.gameObject.CompareTag(""))
+            {
+                other.gameObject.SetActive(false);
+                count = count - 1;
+                SetCountText();
+            }
+            else if (other.gameObject.CompareTag("Sushi"))
+            {
+
+            }
+        }
+        void SetCountText()
+        {
+            countText.text = "Count;" + count.ToString();
+            if (count >= 6)
+            {
+                winText.text ="You Win Game Created By Mariana Lobeto";
+            }
+        }
+        if (Input.GetKey("escape"))
+        {
+            Application.Quit();
+        }
+    }
+}
